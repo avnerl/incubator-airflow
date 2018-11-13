@@ -23,7 +23,7 @@ metadata:
   name: airflow-dags
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   capacity:
     storage: 2Gi
   hostPath:
@@ -69,7 +69,7 @@ metadata:
   name: test-volume
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   capacity:
     storage: 2Gi
   hostPath:

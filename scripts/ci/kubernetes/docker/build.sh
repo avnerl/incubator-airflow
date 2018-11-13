@@ -22,6 +22,8 @@ TAG=${2:-latest}
 DIRNAME=$(cd "$(dirname "$0")"; pwd)
 AIRFLOW_ROOT="$DIRNAME/../../../.."
 
+export SLUGIFY_USES_TEXT_UNIDECODE=yes
+
 ENVCONFIG=$(minikube docker-env)
 if [ $? -eq 0 ]; then
   eval $ENVCONFIG
@@ -33,6 +35,7 @@ echo "Airflow Docker directory $DIRNAME"
 cd $AIRFLOW_ROOT
 python setup.py sdist -q
 echo "Copy distro $AIRFLOW_ROOT/dist/*.tar.gz ${DIRNAME}/airflow.tar.gz"
-cp $AIRFLOW_ROOT/dist/*.tar.gz ${DIRNAME}/airflow.tar.gz
+# switch to mv, as trying to build multiple branchs/tags on the same project root causes the build to fail
+mv $AIRFLOW_ROOT/dist/*.tar.gz ${DIRNAME}/airflow.tar.gz
 cd $DIRNAME && docker build --pull $DIRNAME --tag=${IMAGE}:${TAG}
 rm $DIRNAME/airflow.tar.gz
